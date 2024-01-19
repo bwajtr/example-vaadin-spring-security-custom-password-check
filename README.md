@@ -1,7 +1,32 @@
-# BasicWithLogin
+# How to implement custom username and password validation using Spring Security and Vaadin
 
 This project can be used as a starting point to create your own Vaadin application with Spring Boot.
 It contains all the necessary configuration and some placeholder files to get you started.
+
+# What, where, why?
+
+I used https://start.vaadin.com to create a base for this project. I configured two views that are accessible 
+only when the user logs in. This is the [link to the project](https://start.vaadin.com/app/p?id=d44c0733-7335-4e7a-bceb-287ebd20e863&preview=)
+That added Spring Security to the project (see `SecurityConfiguration` class) and did the necessary configuration
+by extending the `VaadinWebSecurity`. That makes things much easier.
+
+This default configuration uses the `UserDetailsServiceImpl` to load the user details. It is expected that these
+details contain also the hashed password. This hashed password is then compared to the password that the user
+enters in the login form using the `PasswordEncoder`, which is configured in the `SecurityConfiguration` class.
+
+If, for any reason, you do not like this flow, or you simply need to validate the password using another way,
+you have to provide your own implementation of the `AuthenticationProvider`.
+
+This projects shows how to do that. Please take a look at the second commit in this project. It adds
+`CustomAuthenticationProvider` and shows how to use it in the `SecurityConfiguration` class.
+
+Also take a look at all the comments in the `CustomAuthenticationProvider` class.
+
+# Useful stuff for debugging
+
+* Place a breakpoint in the `org.springframework.security.authentication.ProviderManager.authenticate` method and see what is going on in there when you press Login button in the login form
+* By default, the `DaoAuthenticationProvider` is used - you can take a heavy inspiration from it
+* Spring Security uses a set of filters to perform the whole authentication process. Take a look what filters and in which order they are executed by searching for `DefaultSecurityFilterChain` in the application log. The log line starts with `Will securty any request with`
 
 ## Running the application
 
@@ -11,35 +36,3 @@ http://localhost:8080 in your browser.
 
 You can also import the project to your IDE of choice as you would with any
 Maven project. Read more on [how to import Vaadin projects to different IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
-
-## Deploying to Production
-
-To create a production build, call `mvnw clean package -Pproduction` (Windows),
-or `./mvnw clean package -Pproduction` (Mac & Linux).
-This will build a JAR file with all the dependencies and front-end resources,
-ready to be deployed. The file can be found in the `target` folder after the build completes.
-
-Once the JAR file is built, you can run it using
-`java -jar target/custom-password-check-1.0-SNAPSHOT.jar`
-
-## Project structure
-
-- `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the
-  side/top bar and the main menu). This setup uses
-  [App Layout](https://vaadin.com/docs/components/app-layout).
-- `views` package in `src/main/java` contains the server-side Java views of your application.
-- `views` folder in `frontend/` contains the client-side JavaScript views of your application.
-- `themes` folder in `frontend/` contains the custom CSS styles.
-
-## Useful links
-
-- Read the documentation at [vaadin.com/docs](https://vaadin.com/docs).
-- Follow the tutorial at [vaadin.com/docs/latest/tutorial/overview](https://vaadin.com/docs/latest/tutorial/overview).
-- Create new projects at [start.vaadin.com](https://start.vaadin.com/).
-- Search UI components and their usage examples at [vaadin.com/docs/latest/components](https://vaadin.com/docs/latest/components).
-- View use case applications that demonstrate Vaadin capabilities at [vaadin.com/examples-and-demos](https://vaadin.com/examples-and-demos).
-- Build any UI without custom CSS by discovering Vaadin's set of [CSS utility classes](https://vaadin.com/docs/styling/lumo/utility-classes). 
-- Find a collection of solutions to common use cases at [cookbook.vaadin.com](https://cookbook.vaadin.com/).
-- Find add-ons at [vaadin.com/directory](https://vaadin.com/directory).
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
-- Report issues, create pull requests in [GitHub](https://github.com/vaadin).
