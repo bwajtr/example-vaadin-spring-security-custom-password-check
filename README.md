@@ -1,9 +1,4 @@
-# How to implement custom username and password validation using Spring Security and Vaadin
-
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
-
-# What, where, why?
+## How to implement custom username and password validation using Spring Security and Vaadin
 
 I used https://start.vaadin.com to create a base for this project. I configured two views that are accessible 
 only when the user logs in. This is the [link to the project](https://start.vaadin.com/app/p?id=d44c0733-7335-4e7a-bceb-287ebd20e863&preview=)
@@ -22,7 +17,7 @@ This projects shows how to do that. Please take a look at the second commit in t
 
 Also take a look at all the comments in the `CustomAuthenticationProvider` class.
 
-# Useful stuff for debugging
+## Useful stuff for debugging
 
 * Place a breakpoint in the `org.springframework.security.authentication.ProviderManager.authenticate` method and see what is going on in there when you press Login button in the login form
 * By default, the `DaoAuthenticationProvider` is used - you can take a heavy inspiration from it
